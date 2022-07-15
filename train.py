@@ -55,6 +55,8 @@ else:
     optimizer = optim.Adam(model_gcn.parameters(), lr=args.lr)
 model_gcn.train()
 
+os.makedirs(args.experiment, exist_ok=True)
+
 # Graph
 graph = Graph("./ellipsoid/init_info.pickle")
 
