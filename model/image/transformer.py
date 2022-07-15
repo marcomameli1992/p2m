@@ -12,6 +12,7 @@ class Extractor(nn.Module):
         
     def forward(self, x):
         inputs = self.feature_extractor(x[0], return_tensors="pt")
+        inputs.data['pixel_values'] = inputs.data['pixel_values'].to('cuda:0')
         with torch.no_grad():
             outputs = self.model(**inputs, output_hidden_states=True)
         return outputs['hidden_states'][4], outputs['hidden_states'][9], outputs['last_hidden_state']

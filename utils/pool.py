@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 
-device = torch.device('cpu')#torch.device("cuda:0" if torch.cuda.is_available() else 'cpu')
+device = torch.device("cuda:0" if torch.cuda.is_available() else 'cpu')
 
 
 class FeaturePooling():

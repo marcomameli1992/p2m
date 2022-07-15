@@ -39,7 +39,7 @@ model_gcn.load_state_dict(state_dict)
 #             child[ii].track_running_stats = False
 
 # Cuda
-use_cuda = False#torch.cuda.is_available()
+use_cuda = torch.cuda.is_available()
 if use_cuda:
     model_gcn.cuda()
     print('Using GPU')

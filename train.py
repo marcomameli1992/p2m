@@ -35,8 +35,8 @@ parser.add_argument('--transformer_model', type=str, default='google/vit-huge-pa
 args = parser.parse_args()
 
 # Cuda
-use_cuda = False#torch.cuda.is_available()
-device = torch.device('cpu')#torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+use_cuda = torch.cuda.is_available()
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # Model
 if args.load_model is not None: # Continue training
