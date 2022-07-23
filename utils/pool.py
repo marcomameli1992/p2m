@@ -76,6 +76,8 @@ class FeaturePooling():
 
                 concat_features = torch.cat((concat_features, feat_bilinear))
 
+            print(concat_features.shape)
+
             return concat_features.t()
 
 

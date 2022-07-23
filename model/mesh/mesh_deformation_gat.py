@@ -13,23 +13,23 @@ class MeshDeformationBlock(nn.Module):
         super(MeshDeformationBlock, self).__init__()
 
         feature_dict: dict = {
-            'facebook/deit-base-patch16-384': 2304,
-            'facebook/deit-tiny-distilled-patch16-224': 576,
-            'facebook/deit-base-patch16-224': 2304,
-            'facebook/deit-tiny-patch16-224': 576,
-            'facebook/deit-small-patch16-224': 1152,
-            'google/vit-base-patch16-224-in21k': 2304,
-            'google/vit-base-patch16-224': 2304,
-            'google/vit-base-patch16-384': 2304,
-            'google/vit-base-patch32-384': 2304,
-            'google/vit-base-patch32-224-in21k': 2304,
-            'google/vit-large-patch16-224-in21k': 3072,
-            'google/vit-large-patch16-224': 3072,
-            'google/vit-large-patch32-224-in21k': 3072,
-            'google/vit-large-patch32-384': 3072,
-            'google/vit-large-patch16-384': 3072,
-            'google/vit-huge-patch14-224-in21k': 3840
-
+            'facebook/deit-base-patch16-384': 36,
+            'facebook/deit-tiny-distilled-patch16-224': 9,
+            'facebook/deit-base-patch16-224': 36,
+            'facebook/deit-tiny-patch16-224': 9,
+            'facebook/deit-small-patch16-224': 18,
+            'google/vit-base-patch16-224-in21k': 36,
+            'google/vit-base-patch16-224': 36,
+            'google/vit-base-patch16-384': 36,
+            'google/vit-base-patch32-384': 36,
+            'google/vit-base-patch32-224-in21k': 36,
+            'google/vit-large-patch16-224-in21k': 48,
+            'google/vit-large-patch16-224': 48,
+            'google/vit-large-patch32-224-in21k': 48,
+            'google/vit-large-patch32-384': 48,
+            'google/vit-large-patch16-384': 48,
+            'google/vit-huge-patch14-224-in21k': 48,
+            'microsoft/swinv2-base-patch4-window12to24-192to384-22kto1k-ft': 36
         }
 
         self.conv1 = GATv2Conv(feature_dict[transformer_name] + feature_shape_dim, 1024, heads=1, concat=False)

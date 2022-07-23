@@ -32,6 +32,7 @@ parser.add_argument('--load_model', type=str, default=None, metavar='M',
 parser.add_argument('--load_optimizer', type=str, default=None, metavar='O',
                     help='model file to load to continue training.')
 parser.add_argument('--transformer_model', type=str, default='google/vit-huge-patch14-224-in21k', help='the name of the vit to be used')
+parser.add_argument('--batch_size', type=int, default=1, help='the batch size')
 args = parser.parse_args()
 
 # Cuda
@@ -41,10 +42,10 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # Model
 if args.load_model is not None: # Continue training
     state_dict = torch.load(args.load_model, map_location=device)
-    model_gcn = GraphNetwork()
+    model_gcn = GraphNetwork(transformer_name=args.transformer_model)
     model_gcn.load_state_dict(state_dict)
 else:
-    model_gcn = GraphNetwork()
+    model_gcn = GraphNetwork(transformer_name=args.transformer_model)
 
 # Optimizer
 if args.load_optimizer is not None:
@@ -62,7 +63,7 @@ graph = Graph("./ellipsoid/init_info.pickle")
 
 # Data Loader
 folder = CustomDatasetFolder(args.data, extensions=["dat"])
-train_loader = torch.utils.data.DataLoader(folder, batch_size=1, shuffle=True)
+train_loader = torch.utils.data.DataLoader(folder, batch_size=args.batch_size, shuffle=True)
 
 # Param
 nb_epochs = args.epochs
