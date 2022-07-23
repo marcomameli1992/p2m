@@ -61,7 +61,7 @@ os.makedirs(args.experiment, exist_ok=True)
 graph = Graph("./ellipsoid/init_info.pickle")
 
 # Data Loader
-folder = CustomDatasetFolder(args.data, extensions = ["dat"])
+folder = CustomDatasetFolder(args.data, extensions=["dat"])
 train_loader = torch.utils.data.DataLoader(folder, batch_size=1, shuffle=True)
 
 # Param

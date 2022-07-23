@@ -14,5 +14,5 @@ class Extractor(nn.Module):
         inputs = self.feature_extractor(x[0], return_tensors="pt")
         inputs.data['pixel_values'] = inputs.data['pixel_values'].to('cuda:0')
         with torch.no_grad():
-            outputs = self.model(**inputs, output_hidden_states=True, output_attentions=True, interpolate_pos_encodings=True)
-        return outputs['hidden_states'][4], outputs['hidden_states'][9], outputs['last_hidden_state']
+            outputs = self.model(**inputs, output_hidden_states=True, output_attentions=True, interpolate_pos_encoding=True)
+        return outputs.attentions[0], outputs.attentions[int(len(outputs.attentions)/2)], outputs.attentions[-1]

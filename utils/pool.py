@@ -42,7 +42,7 @@ class FeaturePooling():
         '''
         concat_features = torch.FloatTensor().to(device)
 
-        if transformer:
+        if not transformer:
             concat_features = torch.cat(feat_list, dim=2)
             if x.shape[0] > concat_features.shape[1]:
                 concat_features = torch.cat((concat_features, ) * (int(round(x.shape[0]/concat_features.shape[1])) + 1), dim=1)
