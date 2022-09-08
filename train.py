@@ -110,16 +110,15 @@ for epoch in range(1, nb_epochs+1):
         curr_loss += loss
 
         # Log
-        if (n+1)%log_step == 0:
+        if (n+1) % log_step == 0:
             print("Epoch", epoch)
             print("Batch", n+1)
             print(" Loss:", curr_loss.data.item()/log_step)
             curr_loss = 0
 
-        # Save
-        if (n+1)%saving_step == 0:
-            model_file = args.experiment + "model_" + str(n+1) + ".pth"
-            optimizer_file = args.experiment + "optimizer_" + str(n+1) + ".pth"
-            torch.save(model_gcn.state_dict(), model_file)
-            torch.save(optimizer.state_dict(), optimizer_file)
-            print("Saved model to " + model_file)
+
+    model_file = args.experiment + "model_" + str(n+1) + ".pth"
+    optimizer_file = args.experiment + "optimizer_" + str(n+1) + ".pth"
+    torch.save(model_gcn.state_dict(), model_file)
+    torch.save(optimizer.state_dict(), optimizer_file)
+    print("Saved model to " + model_file)
