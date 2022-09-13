@@ -13,6 +13,8 @@ from utils.pool import FeaturePooling
 from utils.metrics import loss_function
 from dataset.dataset import CustomDatasetFolder
 
+import neptune.new as neptune
+
 # Args
 parser = argparse.ArgumentParser(description='Pixel2Mesh training script')
 parser.add_argument('--data', type=str, default=None, metavar='D',
@@ -38,6 +40,23 @@ args = parser.parse_args()
 use_cuda = torch.cuda.is_available()
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+import neptune.new as neptune
+
+run = neptune.init(
+    project="marcomameli1992/Pix2Mesh-PT3D",
+    api_token="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiJkZWJkNDEyYS01NjI0LTRjMDAtODI5Yi0wMzI4NWU5NDc0ZmMifQ==",
+)  # your credentials
+
+params = {"learning_rate": args.lr, "optimizer": "Adam"}
+run["parameters"] = params
+
+for epoch in range(10):
+    run["train/loss"].log(0.9 ** epoch)
+
+run["eval/f1_score"] = 0.66
+
+run.stop()
+
 # Model
 if args.load_model is not None: # Continue training
     state_dict = torch.load(args.load_model, map_location=device)
@@ -61,7 +80,7 @@ os.makedirs(args.experiment, exist_ok=True)
 graph = Graph("./ellipsoid/init_info.pickle")
 
 # Data Loader
-folder = CustomDatasetFolder(args.data, extensions = ["dat"])
+folder = CustomDatasetFolder(args.data, extensions=["dat"])
 train_loader = torch.utils.data.DataLoader(folder, batch_size=1, shuffle=True)
 
 # Param
@@ -82,6 +101,10 @@ else:
     print('Using CPU')
 
 print("Trainable param:", model_gcn.get_nb_trainable_params())
+run["parameters/trainable_param"] = model_gcn.get_nb_trainable_params()
+run["parameters/epochs"] = nb_epochs
+run["parameters/batch_size"] = 1
+run["parameters/transformer_model"] = args.transformer_model
 
 # Train
 for epoch in range(1, nb_epochs+1):
@@ -102,6 +125,8 @@ for epoch in range(1, nb_epochs+1):
         # Loss
         loss = loss_function(pred_points, gt_points.squeeze(),
                                           gt_normals.squeeze(), graph)
+
+        run["train/loss"].log(loss.item())
 
         # Backward
         loss.backward()
