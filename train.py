@@ -102,9 +102,9 @@ else:
     print('Using CPU')
 
 print("Trainable param:", model_gcn.get_nb_trainable_params())
-run["parameters/trainable_param"] = model_gcn.get_nb_trainable_params()
+#run["parameters/trainable_param"] = model_gcn.get_nb_trainable_params()
 run["parameters/epochs"] = nb_epochs
-run["parameters/batch_size"] = 1
+run["parameters/batch_size"] = args.batch_size
 run["parameters/transformer_model"] = args.transformer_model
 
 # Train
