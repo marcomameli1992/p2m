@@ -102,10 +102,12 @@ else:
     print('Using CPU')
 
 print("Trainable param:", model_gcn.get_nb_trainable_params())
+parameters = {'batch_size': args.batch_size, 'epochs': args.epochs, 'lr': args.lr, 'log_step': args.log_step,
+              'saving_step': args.saving_step, 'experiment': args.experiment, 'load_model': args.load_model,
+              'load_optimizer': args.load_optimizer, 'transformer_model': args.transformer_model,
+              'trainable_param': model_gcn.get_nb_trainable_params()}
 #run["parameters/trainable_param"] = model_gcn.get_nb_trainable_params()
-run["parameters/epochs"] = nb_epochs
-run["parameters/batch_size"] = args.batch_size
-run["parameters/transformer_model"] = args.transformer_model
+run["parameters"] = parameters
 
 # Train
 for epoch in range(1, nb_epochs+1):
