@@ -34,6 +34,7 @@ parser.add_argument('--load_model', type=str, default=None, metavar='M',
 parser.add_argument('--load_optimizer', type=str, default=None, metavar='O',
                     help='model file to load to continue training.')
 parser.add_argument('--transformer_model', type=str, default='google/vit-huge-patch14-224-in21k', help='the name of the vit to be used')
+parser.add_argument('--batch_size', type=int, default=1, help='batch size')
 args = parser.parse_args()
 
 # Cuda
@@ -81,7 +82,7 @@ graph = Graph("./ellipsoid/init_info.pickle")
 
 # Data Loader
 folder = CustomDatasetFolder(args.data, extensions=["dat"])
-train_loader = torch.utils.data.DataLoader(folder, batch_size=1, shuffle=True)
+train_loader = torch.utils.data.DataLoader(folder, batch_size=args.batch_size, shuffle=True)
 
 # Param
 nb_epochs = args.epochs
