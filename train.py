@@ -56,8 +56,6 @@ for epoch in range(10):
 
 run["eval/f1_score"] = 0.66
 
-run.stop()
-
 # Model
 if args.load_model is not None: # Continue training
     state_dict = torch.load(args.load_model, map_location=device)
@@ -106,7 +104,6 @@ parameters = {'batch_size': args.batch_size, 'epochs': args.epochs, 'lr': args.l
               'saving_step': args.saving_step, 'experiment': args.experiment, 'load_model': args.load_model,
               'load_optimizer': args.load_optimizer, 'transformer_model': args.transformer_model,
               'trainable_param': model_gcn.get_nb_trainable_params()}
-#run["parameters/trainable_param"] = model_gcn.get_nb_trainable_params()
 run["parameters"] = parameters
 
 # Train
@@ -150,3 +147,6 @@ for epoch in range(1, nb_epochs+1):
     torch.save(model_gcn.state_dict(), model_file)
     torch.save(optimizer.state_dict(), optimizer_file)
     print("Saved model to " + model_file)
+
+
+run.stop()
