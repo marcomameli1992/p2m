@@ -9,7 +9,7 @@ class MeshDeformationBlock(nn.Module):
         Implementation of the mesh deformation block
     '''
 
-    def __init__(self, transformer_name: str, feature_shape_dim) -> None:
+    def __init__(self, transformer_name: str, feature_shape_dim, intermedia_count: int = 6) -> None:
         super(MeshDeformationBlock, self).__init__()
 
         feature_dict: dict = {
@@ -32,12 +32,24 @@ class MeshDeformationBlock(nn.Module):
 
         }
 
-        self.conv1 = GATv2Conv(feature_dict[transformer_name] + feature_shape_dim, 1024, heads=1, concat=False)
-        self.conv21 = GATv2Conv(1024, 512, heads=1, concat=False)
-        self.conv22 = GATv2Conv(512, 256, heads=1, concat=False)
-        self.conv23 = GATv2Conv(256, 128, heads=1, concat=False)
+        self.conv1 = GATv2Conv(feature_dict[transformer_name] + feature_shape_dim, 1024, heads=3, concat=True)
+        count = 0
+        gat_intermedia_list = []
+        for i in range(intermedia_count):
+            if count == 0:
+                gat_intermedia_list.append(GATv2Conv(1024, 1024, heads=3, concat=True))
+            elif count == 1:
+                gat_intermedia_list.append(GATv2Conv(1024, 512, heads=3, concat=True))
+            elif count == 2:
+                gat_intermedia_list.append(GATv2Conv(512, 512, heads=3, concat=True))
+            elif count == 3:
+                gat_intermedia_list.append(GATv2Conv(512, 256, heads=3, concat=True))
+            elif count == 4:
+                gat_intermedia_list.append(GATv2Conv(256, 256, heads=3, concat=True))
+            elif count == 5:
+                gat_intermedia_list.append(GATv2Conv(256, 128, heads=3, concat=True))
 
-        self.conv2 = [self.conv21, self.conv22, self.conv23]
+        self.conv2 = nn.Sequential(*gat_intermedia_list)
 
         self.conv3 = GATv2Conv(128, 3)
 
